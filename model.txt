@@ -1,0 +1,12 @@
+Airport
+  code:string
+
+  has_many arriving_flights, foreign_key: arrival_airport,  class_name: Flight
+  has_many departing_flights, foreign_key: departure_airport, class_name: Flight
+
+Flight
+  start:datetime
+  duration_m:integer
+
+  belongs_to arrival_airport:ref to Airport
+  belongs_to departure_airport:ref to Airport
