@@ -10,3 +10,4 @@ Flight
 
   belongs_to arrival_airport:ref to Airport
   belongs_to departure_airport:ref to Airport
+

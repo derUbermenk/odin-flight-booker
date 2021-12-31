@@ -5,3 +5,28 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+airport_codes = %w[VRC MNL NYC LEG NGA BSC CDO DVO GOA]
+
+def create_flight
+  start = DateTime.new(2021, 12, 25, (8..17).to_a.sample, [0, 30, 45].sample)
+  duration = [60, 30, 45].sample
+
+  arrival_airport = Airport.all.sample
+  departure_airport = Airport.all.excluding(arrival_airport).sample
+
+  Flight.create(
+    start: start, duration_m: duration,
+    arrival_airport: arrival_airport,
+    departure_airport: departure_airport
+  )
+end
+
+8.times do |i|
+  Airport.create(code: airport_codes[i])
+end
+
+
+20.times do 
+  create_flight
+end
