@@ -9,7 +9,7 @@
 airport_codes = %w[VRC MNL NYC LEG NGA BSC CDO DVO GOA]
 
 def create_flight
-  start = DateTime.new(2021, 12, 25, (8..17).to_a.sample, [0, 30, 45].sample)
+  start = DateTime.new(2021, 12, [*1..31].sample, [*8..17].sample, [0, 30, 45].sample)
   duration = [60, 30, 45].sample
 
   arrival_airport = Airport.all.sample
