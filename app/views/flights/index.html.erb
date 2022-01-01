@@ -1,12 +1,12 @@
 <h1>Flights</h1>
-<h1><%= p @p %></h1>
-
 
 <%= form_with scope: :filter, url: "/", method: :get do |form| %>
   <%= form.collection_select :departure_airport_id, Flight.all, ->(flight){ flight.departure_airport_id }, ->(flight){ flight.departure_airport.code }, include_blank: "Departure Airport" %>
   <%= form.collection_select :arrival_airport_id, Flight.all, ->(flight){ flight.arrival_airport_id }, ->(flight){ flight.arrival_airport.code }, include_blank: "Arrival Airport" %>
   <%= form.select :number_of_passengers, [*1..4], prompt: "Number of Passengers" %>
-  <%= form.collection_select :start, Flight.all, :start, ->(flight) { flight.start.strftime("%B %d, %Y - %H:%M") }, prompt: 'Time of flight'  %>
+  <%= select_year Date.today, start_year: Date.today.years_ago(1).year, end_year: 5.months.from_now.year, prefix: 'filter[start]' %>
+  <%= select_month 0, prompt: 'Choose Month', prefix: 'filter[start]' %>
+  <%= select_day 0, prompt: 'Choose Day', prefix: 'filter[start]' %>
   <%= form.submit "Search" %>
   <%= link_to "Clear Form", root_path %>
 <% end %>
