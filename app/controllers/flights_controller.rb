@@ -1,6 +1,7 @@
 class FlightsController < ApplicationController
   def index
     @flights = Flight.all
+    @filters = store_filters
 
     filter_flights unless search_params.empty?
   end
@@ -32,20 +33,43 @@ class FlightsController < ApplicationController
 
   def filter_flight_dates(date)
     date.each do |time_unit, time|
-      case time_unit
-      when 'year'
-        start_date = DateTime.new(time.to_i)
-        end_date = start_date.end_of_year
-        @flights = @flights.where('start >= ? AND start <= ?', start_date, end_date)
-      when 'month'
-        start_date = DateTime.new(search_params[:start][:year].to_i, search_params[:start][:month].to_i)
-        end_date = start_date.end_of_month
-        @flights = @flights.where('start >= ? AND start <= ?', start_date, end_date)
-      when 'day'
-        start_date = DateTime.new(search_params[:start][:year].to_i, search_params[:start][:month].to_i, time.to_i)
-        end_date = start_date.end_of_day
-        @flights = @flights.where('start >= ? AND start <= ?', start_date, end_date)
-      end
+      start_date = case time_unit
+                   when 'year' then DateTime.new(time.to_i)
+                   when 'month' then DateTime.new(search_params[:start][:year].to_i, search_params[:start][:month].to_i)
+                   when 'day' 
+                    if params[:filter][:start][:month] == ''
+                      DateTime.new(search_params[:start][:year].to_i)
+                    else
+                      DateTime.new(search_params[:start][:year].to_i, search_params[:start][:month].to_i, time.to_i)
+                    end
+                   end
+
+      end_date = case time_unit
+                 when 'year' then start_date.end_of_year
+                 when 'month' then start_date.end_of_month
+                 when 'day' 
+                  if params[:filter][:start][:month] == ''
+                    start_date.end_of_year
+                  else
+                    start_date.end_of_day
+                  end
+                 end
+
+      @flights = @flights.where('start >= ? AND start <= ?', start_date, end_date)
     end
+  end
+
+  def store_filters
+    {
+      departure_airport: has_filters? && params[:filter][:departure_airport_id],
+      arrival_airport_id: has_filters? && params[:filter][:arrival_airport_id],
+      year: has_filters? && params[:filter][:start][:year],
+      month: has_filters? && params[:filter][:start][:month],
+      day: has_filters? && params[:filter][:start][:day]
+    }
+  end
+
+  def has_filters?
+    nil if params[:filter].nil?
   end
 end
