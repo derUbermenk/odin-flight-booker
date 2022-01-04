@@ -4,9 +4,13 @@ class Flight < ApplicationRecord
   belongs_to :arrival_airport, class_name: 'Airport'
   belongs_to :departure_airport, class_name: 'Airport'
 
-  scope :passenger_count, -> { bookings.map(&:passengers_count).sum }
+  
 
   def route
-    { arrival: self.arrival_airport, departure: self.departure_airport }
+    { arrival: arrival_airport, departure: departure_airport }
+  end
+
+  def passenger_count
+    bookings.map(&:passengers_count).sum
   end
 end

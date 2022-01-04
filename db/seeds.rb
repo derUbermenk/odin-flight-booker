@@ -9,7 +9,7 @@
 airport_codes = %w[VRC MNL NYC LEG NGA BSC CDO DVO GOA]
 
 def create_flight
-  start = DateTime.new(2022, [*1..12].sample, [*1..30].sample, [*8..17].sample, [0, 30, 45].sample)
+  start = DateTime.new(2022, [*3..12].sample, [*1..30].sample, [*8..17].sample, [0, 30, 45].sample)
   duration = [60, 30, 45].sample
 
   arrival_airport = Airport.all.sample
@@ -26,7 +26,6 @@ end
   Airport.create(code: airport_codes[i])
 end
 
-
-20.times do 
+20.times do
   create_flight
 end

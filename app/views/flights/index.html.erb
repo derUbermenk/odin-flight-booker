@@ -24,15 +24,15 @@
   <br>
   <i><small> No flights available </small></i>
 <% else %>
-  <%= form_with scope: :flights, url: new_booking_path, method: :get do |f| %>
+  <%= form_with scope: :booking, url: new_booking_path, method: :get do |f| %>
     <% @flights.each do |flight| %>
       <% 
         route = flight.route.transform_values { |v| v.code } 
         id = flight.id 
         start = flight.start.strftime("%e %B, %Y;  %l:%M %p")
       %>
-      <%= f.radio_button :flight, id %>
-      <%= f.label "flight_#{id}", "#{route[:departure]}-#{route[:arrival]} #{start}" %> <br>
+      <%= f.radio_button :flight_id, id %>
+      <%= f.label "flight_id#{id}", "#{route[:departure]}-#{route[:arrival]} #{start}" %> <br>
     <% end %>
     <%= f.hidden_field :number_of_passengers, value: @number_of_passengers %>
     <%= f.submit "Book Flight"%>
