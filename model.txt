@@ -11,3 +11,11 @@ Flight
   belongs_to arrival_airport:ref to Airport
   belongs_to departure_airport:ref to Airport
 
+Booking
+  Flights has many passenger through bookings
+  Passenger has many flights through bookings
+
+  booking belongs to a flight
+  booking belongs to a passenger
+
+Flight <--> Booking <--> Passenger

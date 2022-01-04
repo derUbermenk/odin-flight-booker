@@ -70,6 +70,6 @@ class FlightsController < ApplicationController
   end
 
   def has_filters?
-    nil if params[:filter].nil?
+    !params[:filter].nil?
   end
 end
