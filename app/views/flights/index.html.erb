@@ -7,8 +7,9 @@
   <%= form.collection_select :arrival_airport_id, Airport.all, ->(airport){ airport.id }, ->(airport){ airport.code }, 
                              include_blank: "Arrival Airport",
                              selected: @filters[:arrival_airport] %>
+  <!-- not a filter -->                          
   <%= form.select :number_of_passengers, [*1..4], prompt: "Number of Passengers",
-                  selected: @filters[:number_of_passenger] %>
+                  selected: @filters[:number_of_passengers] %>
   <%= select_year Date.today, options = {start_year: Date.today.years_ago(1).year, end_year: 5.months.from_now.year, prefix: 'filter[start]'}, 
                   selected: @filters[:year] %>
   <%= select_month 0, prompt: 'Choose Month', prefix: 'filter[start]',
@@ -33,6 +34,7 @@
       <%= f.radio_button :flight, id %>
       <%= f.label "flight_#{id}", "#{route[:departure]}-#{route[:arrival]} #{start}" %> <br>
     <% end %>
+    <%= f.hidden_field :number_of_passengers, value: @number_of_passengers %>
     <%= f.submit "Book Flight"%>
   <% end %>
 <% end %>

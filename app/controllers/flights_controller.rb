@@ -2,6 +2,7 @@ class FlightsController < ApplicationController
   def index
     @flights = Flight.all
     @filters = store_filters
+    @number_of_passengers = search_params[:number_of_passengers]
 
     filter_flights unless search_params.empty?
   end
@@ -9,10 +10,9 @@ class FlightsController < ApplicationController
   private
 
   def search_params
-    # add number of passengers later :number_of_passengers 
     if params[:filter]
       params.require(:filter)
-            .permit(:departure_airport_id, :arrival_airport_id, start: %i[year month day])
+            .permit(:departure_airport_id, :arrival_airport_id, :number_of_passengers, start: %i[year month day])
             .compact_blank
     else
       {}
@@ -25,6 +25,8 @@ class FlightsController < ApplicationController
       case k
       when 'start'
         filter_flight_dates(v.compact_blank)
+      when 'number_of_passengers'
+        nil
       else
         @flights = @flights.where(k => v)
       end
@@ -62,7 +64,8 @@ class FlightsController < ApplicationController
   def store_filters
     {
       departure_airport: has_filters? && params[:filter][:departure_airport_id],
-      arrival_airport_id: has_filters? && params[:filter][:arrival_airport_id],
+      arrival_airport: has_filters? && params[:filter][:arrival_airport_id],
+      number_of_passengers: has_filters? && params[:filter][:number_of_passengers],
       year: has_filters? && params[:filter][:start][:year],
       month: has_filters? && params[:filter][:start][:month],
       day: has_filters? && params[:filter][:start][:day]
