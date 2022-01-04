@@ -1,0 +1,20 @@
+<h1>Booking <%= @booking.id %></h1>
+
+<div>
+  <h3> Flight Info </h3>
+  <div>
+    <p> <strong>Start: </strong><%= @flight.start.strftime("%l:%M %p; %e %B, %Y") %></p>
+    <p> <strong>Duration: </strong><%= @flight.duration_m %> minutes</p>
+    <p> <strong>Route: </strong><%= "#{@flight.route[:departure].code} - #{@flight.route[:arrival].code}" %></p>
+    <p> <strong>Number of passengers in flight: </strong><%= @flight.passenger_count %></p>
+  </div>
+</div>
+
+<div>
+  <h3> Booking Info </h3>
+  <div>
+    <% @booking.passengers.each do |passenger| %>
+      <p> <span><%= passenger.name %></span> <i><%= passenger.email %></i>
+    <% end %>
+  </div>
+</div>
