@@ -1,4 +1,3 @@
 class Passenger < ApplicationRecord
-  has_one :booking
-  has_one :flight, through: bookings
+  belongs_to :booking, counter_cache: true
 end

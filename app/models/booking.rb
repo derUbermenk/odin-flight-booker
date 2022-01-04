@@ -1,4 +1,5 @@
 class Booking < ApplicationRecord
-  belongs_to :passenger
-  belongs_to :flight, counter_cache: :passenger_count
+  has_many :passengers, dependent: :delete_all
+
+  belongs_to :flight
 end
