@@ -9,8 +9,14 @@ class BookingsController < ApplicationController
   def create
     @flight = Flight.find(params[:booking][:flight_id])
     @booking = @flight.bookings.build(create_params)
-    @booking.save!
-    render 'show'
+
+    if @booking.save
+      @booking.send_confirmation
+      render :show
+    else
+      flash[:error] = 'Failed Booking flight'
+      render :new
+    end
   end
 
   def show
