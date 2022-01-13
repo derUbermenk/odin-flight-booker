@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+  </head>
+
+  <body>
+    <p>
+      A booking for <%= @passenger.name %> using your email <%= @passenger.email %>
+      was created. Please confirm booking.
+    </p> 
+    <%= form_with scope: :confirmation, url: root_url, method: :patch do |f| %>
+      <%= f.hidden_field :passenger_id, value: @passenger.id %>
+      <%= f.submit "Confirm" %>
+    <% end %>
+  </body>
+</html>

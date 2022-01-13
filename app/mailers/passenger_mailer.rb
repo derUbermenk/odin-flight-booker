@@ -3,6 +3,9 @@ class PassengerMailer < ApplicationMailer
 
   def confirmation_email
     @passenger = params[:passenger]
-    mail(to: @passenger.email, subject: 'Flight Booking Confirmation')
+    mail(to: email_address_with_name(@passenger.email, @passenger.name),
+         subject: 'Flight Booking Confirmation')
+
+    # PassengerMailer.with(passenger: Passenger.first).confirmation_email.deliver_now!
   end
 end
