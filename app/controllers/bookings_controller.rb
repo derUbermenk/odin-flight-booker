@@ -1,7 +1,7 @@
 class BookingsController < ApplicationController
   def new
     @booking = Booking.new
-    @flight = Flight.find(new_params[:flight_id])
+    @booking.flight = Flight.find(new_params[:flight_id])
 
     new_params[:number_of_passengers].times { @booking.passengers.build }
   end
@@ -17,9 +17,6 @@ class BookingsController < ApplicationController
       flash[:error] = 'Failed Booking flight'
       render :new
     end
-  end
-
-  def show
   end
 
   private

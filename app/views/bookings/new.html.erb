@@ -1,15 +1,33 @@
+<% flash.each do |type, msg| %>
+  <div> 
+    <%= msg %>
+  </div>
+<% end %>
+
 <h1>Booking</h1>
 
 <div>
-  <p> <strong>Start: </strong><%= @flight.start.strftime("%l:%M %p; %e %B, %Y") %></p>
-  <p> <strong>Duration: </strong><%= @flight.duration_m %> minutes</p>
-  <p> <strong>Route: </strong><%= "#{@flight.route[:departure].code} - #{@flight.route[:arrival].code}" %></p>
-  <p> <strong>Number of passengers: </strong><%= @flight.passenger_count %></p>
+  <p> <strong>Start: </strong><%= @booking.flight.start.strftime("%l:%M %p; %e %B, %Y") %></p>
+  <p> <strong>Duration: </strong><%= @booking.flight.duration_m %> minutes</p>
+  <p> <strong>Route: </strong><%= "#{@booking.flight.route[:departure].code} - #{@booking.flight.route[:arrival].code}" %></p>
+  <p> <strong>Number of passengers: </strong><%= @booking.flight.passenger_count %></p>
 </div>
 
 <%= form_with model: @booking do |form| %>
+  <% if @booking.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@booking.errors.count, "error") %> prohibited this booking from being saved:</h2>
+
+      <ul>
+        <% @booking.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <h3>Passengers</h3>
-  <%= form.hidden_field :flight_id, value: @flight.id %>
+  <%= form.hidden_field :flight_id, value: @booking.flight.id %>
   <%= form.fields_for :passengers do |passengers_form| %>
     <p>
       <%= passengers_form.label :name %>
